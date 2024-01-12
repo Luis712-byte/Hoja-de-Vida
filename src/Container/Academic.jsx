@@ -2,9 +2,9 @@ import React from "react";
 
 const AcademicFormation = () => {
   return (
-    <div className="container mt-5">
+    <div className="container">
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-md-6" >
           <div className="card mb-4">
             <div className="card-body">
               <h5 className="card-title">Basica Secundaria</h5>

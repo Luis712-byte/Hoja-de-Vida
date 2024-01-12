@@ -52,11 +52,7 @@ export default function Curriculum() {
             </Col>
             <Col md={4} className="text-md-right">
               <figure>
-                <img
-                  src={Perfil}
-                  alt="Luis photo"
-                  className="img-fluid"
-                />
+                <img src={Perfil} alt="Luis photo" className="img-fluid" />
               </figure>
             </Col>
           </Row>
@@ -94,11 +90,11 @@ export default function Curriculum() {
           <h3>IDIOMAS</h3>
           <LanguageSkills></LanguageSkills>
         </section>
-        <div className="separator"></div>
+        {/*<div className="separator"></div>
         <section>
           <h3>CONTACTO</h3>
           <Contact></Contact>
-        </section>
+          </section>*/}
       </Container>
     </>
   );

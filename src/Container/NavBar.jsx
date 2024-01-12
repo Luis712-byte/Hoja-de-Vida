@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
-import html2canvas from 'html2canvas';
+import React, { useRef } from "react";
+import html2canvas from "html2canvas";
 import jsPDF from 'jspdf';
+import axios from 'axios';
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import certificaciones from "./Certification";
@@ -13,36 +14,82 @@ const NavBar = ({ contentRef }) => {
     navigate("/certificaciones");
   };
 
-  const handlePrintToPDF = () => {
-    const content = contentRef.current;
+  const handlePrintToPDF = async () => {
+    try {
+      const content = contentRef.current;
 
-    if (content) {
-      setTimeout(() => {
-        html2canvas(content, {
+      if (content) {
+        const pdfWidth = 1658; // Ancho en mm
+        const pdfHeight = 1658; // Alto en mm
+
+        const pdf = new jsPDF({
+          orientation: 'landscape',
+          unit: 'mm',
+          format: [pdfWidth, pdfHeight],
+        });
+
+        const canvas = await html2canvas(content, {
           allowTaint: true,
           useCORS: true,
           scrollX: 0,
           scrollY: 0,
-          windowWidth: document.documentElement.scrollWidth,
-          windowHeight: document.documentElement.scrollHeight,
-        }).then((canvas) => {
-          const imgData = canvas.toDataURL("image/png");
-          const pdf = new jsPDF("p", "mm", "a4"); // 'p' for portrait, 'l' for landscape
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const pdfHeight = pdf.internal.pageSize.getHeight();
-
-          // Calcula las dimensiones de la imagen en relación con el PDF
-          const imgWidth = pdfWidth;
-          const imgHeight = (canvas.height * pdfWidth) / canvas.width;
-
-          pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-          pdf.save("mi_curriculum.pdf");
+          windowWidth: pdfWidth,
+          windowHeight: pdfHeight,
+          scale: pdfWidth / content.offsetWidth,
+          // Ajusta la orientación del lienzo de html2canvas
+          width: pdfWidth,
+          height: pdfHeight,
         });
-      }, 500); // Agrega un retraso de 500 milisegundos (ajustable según sea necesario)
-    } else {
-      console.error("Ref contentRef.current is undefined.");
+
+        const imgData = canvas.toDataURL('image/png');
+
+        // Agrega la imagen al PDF
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+        // Guarda el PDF
+        pdf.save('mi_curriculum.pdf');
+      } else {
+        console.error('Ref contentRef.current is undefined.');
+      }
+    } catch (error) {
+      console.error('Error al cargar el PDF:', error);
     }
   };
+  /*const content = contentRef.current;
+
+  if (content) {
+    const pdfOrientation = 'p'; // 'p' for portrait, 'l' for landscape
+    const pdfSize = 'a4'; // Tamaño del PDF
+
+    const pdf = new jsPDF(pdfOrientation, 'mm', pdfSize);
+
+    html2canvas(content, {
+      allowTaint: true,
+      useCORS: true,
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: document.documentElement.scrollWidth,
+      windowHeight: document.documentElement.scrollHeight,
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+
+      // Calcula las dimensiones de la imagen en relación con el PDF
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      // Agrega la imagen al PDF
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+
+      // Guarda el PDF
+      pdf.save('mi_curriculum.pdf');
+    });
+  } else {
+    console.error('Ref contentRef.current is undefined.');
+  }
+};*/
+
   return (
     <Navbar expand="lg" className="Navbar">
       <Container>
@@ -77,5 +124,5 @@ const NavBar = ({ contentRef }) => {
       </Container>
     </Navbar>
   );
-}
+};
 export default NavBar;
