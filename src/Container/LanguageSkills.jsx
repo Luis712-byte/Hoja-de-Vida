@@ -8,7 +8,7 @@ const IdiomasSection = () => {
   ]);
 
   const getNivelStyle = (nivel) => {
-    const color = `rgba(33, 150, 243, ${nivel / 100})`;
+    const color = `#6a994e`;
     return { backgroundColor: color };
   };
 

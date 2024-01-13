@@ -58,7 +58,7 @@ export default function Curriculum() {
           </Row>
         </section>
         <div className="separator"></div>
-        <section>
+        <section >
           <h3>PERFIL PROFESIONAL</h3>
           <p>
             Soy un apasionado desarrollador Frontend, dedicado a transformar
@@ -82,7 +82,7 @@ export default function Curriculum() {
         </section>
         <div className="separator"></div>
         <section>
-          <h3>HABILIDADES</h3>
+          <h3>HABILIDADES/COMPETENCIAS</h3>
           <Skill></Skill>
         </section>
         <div className="separator"></div>
